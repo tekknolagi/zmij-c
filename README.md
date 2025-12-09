@@ -6,7 +6,7 @@ Improvements:
 * Faster logarithm approximations
 * Fewer branches
 * Faster division and modulo
-* More efficient digit generation
+* More efficient significand and exponent output
 
 ## Usage
 
@@ -28,18 +28,19 @@ on dtoa-benchmark.
 
 | Function       | Time (ns) | Speedup  |
 |----------------|----------:|---------:|
-| ostringstream  | 892.448   | 1.00x    |
-| sprintf        | 751.571   | 1.19x    |
-| doubleconv     | 84.961    | 10.50x   |
-| to_chars       | 42.921    | 20.79x   |
-| ryu            | 37.102    | 24.05x   |
-| schubfach      | 25.346    | 35.21x   |
-| fmt            | 22.374    | 39.89x   |
-| dragonbox      | 20.681    | 43.15x   |
-| zmij           | 16.219    | 55.02x   |
-| null           | 0.932     | 957.80x  |
+| ostringstream  | 883.690   | 1.00x    |
+| sprintf        | 736.937   | 1.20x    |
+| doubleconv     | 83.762    | 10.55x   |
+| to_chars       | 43.272    | 20.42x   |
+| ryu            | 37.201    | 23.75x   |
+| schubfach      | 24.747    | 35.71x   |
+| fmt            | 22.284    | 39.66x   |
+| dragonbox      | 20.689    | 42.71x   |
+| zmij           | 13.581    | 65.07x   |
+| null           | 0.930     | 950.20x  |
 
-<img width="769" height="347" alt="image" src="https://github.com/user-attachments/assets/d3cc3e54-a70e-45a1-997e-ed86181dde87" />
+<img width="762" height="335" alt="image" src="https://github.com/user-attachments/assets/c700dedd-b6ff-4fb6-ab46-02c2996bb9ae" />
 
-<img width="874" height="657" alt="image" src="https://github.com/user-attachments/assets/f12205dc-4154-4fac-955b-adf4a080bb0f" />
+<img width="879" height="666" alt="image" src="https://github.com/user-attachments/assets/54bf2057-258f-43aa-bcc5-bddd3e85cab6" />
+
 
