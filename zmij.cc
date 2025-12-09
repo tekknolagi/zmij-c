@@ -884,7 +884,7 @@ void zmij::dtoa(double value, char* buffer) noexcept {
 
   // The idea of using a single shorter candidate is by Cassio Neri.
   uint64_t shorter = 10 * ((upper >> 2) / 10);
-  if (shorter >= lower) return write(buffer, shorter, dec_exp);
+  if ((shorter << 2) >= lower) return write(buffer, shorter, dec_exp);
 
   uint64_t scaled_sig =
       umul192_upper64_modified(pow10_hi, pow10_lo, bin_sig_shifted << shift);
