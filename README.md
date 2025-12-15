@@ -10,20 +10,22 @@ A double-to-string conversion algorithm based on [Schubfach](https://fmt.dev/pap
 * High [performance](#performance)
 * Fast [compile time](#compile-time)
 * Zero dependencies
+* **C11 compatible** - pure C implementation with no C++ dependencies
 * Small, clean codebase consisting of one [source file](
-  https://github.com/vitaut/zmij/blob/main/zmij.cc) and one [header](https://github.com/vitaut/zmij/blob/main/zmij.h)
-* Permissive [license](https://github.com/vitaut/zmij/blob/main/LICENSE)
+  https://github.com/tekknolagi/zmij/blob/main/zmij.c) and one [header](https://github.com/tekknolagi/zmij/blob/main/zmij.h)
+* Permissive [license](https://github.com/tekknolagi/zmij/blob/main/LICENSE)
 
 ## Usage
 
-```c++
+```c
 #include "zmij.h"
 #include <stdio.h>
 
-int main() {
-  char buf[zmij::buffer_size];
-  zmij::dtoa(6.62607015e-34, buf);
+int main(void) {
+  char buf[ZMIJ_BUFFER_SIZE];
+  zmij_dtoa(6.62607015e-34, buf);
   puts(buf);
+  return 0;
 }
 ```
 
@@ -58,7 +60,7 @@ on [dtoa-benchmark](https://github.com/fmtlib/dtoa-benchmark) run on Apple M1.
 Compile time is ~60ms by default and ~68ms with optimizations enabled as measured by
 
 ```
-% time c++ -c -std=c++20 zmij.cc [-O2]
+% time cc -c -std=c11 zmij.c [-O2]
 ```
 
 taking the best of 3 runs.
