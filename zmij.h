@@ -3,12 +3,21 @@
 // Distributed under the MIT license (see LICENSE) or alternatively
 // the Boost Software License, Version 1.0.
 
-namespace zmij {
+#ifndef ZMIJ_H
+#define ZMIJ_H
 
-constexpr int buffer_size = 25;
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define ZMIJ_BUFFER_SIZE 25
 
 /// Writes the shortest correctly rounded decimal representation of `value` to
-/// `buffer`. `buffer` should point to a buffer of size `buffer_size` or larger.
-void dtoa(double value, char* buffer) noexcept;
+/// `buffer`. `buffer` should point to a buffer of size `ZMIJ_BUFFER_SIZE` or larger.
+void zmij_dtoa(double value, char* buffer);
 
-}  // namespace zmij
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // ZMIJ_H
