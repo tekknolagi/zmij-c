@@ -708,6 +708,20 @@ inline auto digits2(size_t value) noexcept -> const char* {
   return &data[value * 2];
 }
 
+inline auto digits2_u64(uint32_t value) noexcept -> uint64_t {
+  uint16_t digits;
+  memcpy(&digits, digits2(value), 2);
+  return digits;
+}
+
+// Converts the value `aa * 10**6 + bb * 10**4 + cc * 10**2 + dd` to a string
+// returned as a 64-bit integer.
+auto digits8_u64(uint32_t aa, uint32_t bb, uint32_t cc, uint32_t dd) noexcept
+    -> uint64_t {
+  return digits2_u64(dd) << 48 | digits2_u64(cc) << 32 |
+         digits2_u64(bb) << 16 | digits2_u64(aa);
+}
+
 struct divmod_result {
   uint32_t div;
   uint32_t mod;
@@ -763,23 +777,6 @@ inline void write2digits(void* buffer, uint32_t value) noexcept {
   memcpy(buffer, digits2(value), 2);
 }
 
-// Converts an integer consisting of 4 base 100 digits to a string stored
-// in a 64-bit integer.
-auto digits8(uint32_t aa, uint32_t bb, uint32_t cc, uint32_t dd) noexcept
-    -> uint64_t {
-  uint16_t aa_digits;
-  write2digits(&aa_digits, aa);
-  uint16_t bb_digits;
-  write2digits(&bb_digits, bb);
-  uint16_t cc_digits;
-  write2digits(&cc_digits, cc);
-  uint16_t dd_digits;
-  write2digits(&dd_digits, dd);
-
-  return uint64_t(dd_digits) << 48 | uint64_t(cc_digits) << 32 |
-         uint64_t(bb_digits) << 16 | aa_digits;
-}
-
 // Writes a significand consisting of 16 or 17 decimal digits and removes
 // trailing zeros.
 auto write_significand(char* buffer, uint64_t value) noexcept -> char* {
@@ -800,7 +797,7 @@ auto write_significand(char* buffer, uint64_t value) noexcept -> char* {
   // Use an intermediate uint64_t to make sure that the compiler constructs
   // the value in a register. This way the buffer is written to memory in
   // one go and count_trailing_nonzeros doesn't have to load from memory.
-  uint64_t digits = digits8(bb, cc, dd, ee);
+  uint64_t digits = digits8_u64(bb, cc, dd, ee);
   memcpy(buffer, &digits, 8);
   if (ffgghhii == 0) return buffer + count_trailing_nonzeros(digits);
 
@@ -809,7 +806,7 @@ auto write_significand(char* buffer, uint64_t value) noexcept -> char* {
   uint32_t hhii = ffgghhii % 10'000;
   auto [ff, gg] = divmod100(ffgg);
   auto [hh, ii] = divmod100(hhii);
-  digits = digits8(ff, gg, hh, ii);
+  digits = digits8_u64(ff, gg, hh, ii);
   memcpy(buffer, &digits, 8);
   return buffer + count_trailing_nonzeros(digits);
 }
